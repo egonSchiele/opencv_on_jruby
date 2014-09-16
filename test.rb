@@ -18,11 +18,9 @@ java_import org.opencv.features2d.Features2d
 # java.lang.System.loadLibrary(Core::NATIVE_LIBRARY_NAME)
 
 def resize(data)
-    # img = Highgui.imdecode(data, Highgui::CV_LOAD_IMAGE_COLOR)
-    File.open("/tmp/out.png", "wb+") do |f|
-      f.write(data)
-    end
-    img = Highgui.imread("/tmp/out.png")
+    data_mat = MatOfByte.new
+    data_mat.fromArray(data.to_java_bytes)
+    img = Highgui.imdecode(data_mat, Highgui::CV_LOAD_IMAGE_COLOR)
     dst = Mat.new
     sz = Size.new(100,100);
     Imgproc.resize(img, dst, sz)
@@ -31,6 +29,11 @@ def resize(data)
     arr = buf.toArray
     arr.to_s
 end
+
+# url = "http://static.adit.io/hand_drawn_title_color.png"
+# data = open(url).read
+# puts resize(data)
+# exit
 
 class App
   def call(env)
