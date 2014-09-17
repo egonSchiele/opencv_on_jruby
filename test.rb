@@ -17,6 +17,8 @@ java_import org.opencv.features2d.FeatureDetector
 java_import org.opencv.features2d.Features2d
 # java.lang.System.loadLibrary(Core::NATIVE_LIBRARY_NAME)
 
+DATA = File.open("/tmp/test.png", "rb").read
+
 def resize(data)
     data_mat = MatOfByte.new
     data_mat.fromArray(data.to_java_bytes)
@@ -40,10 +42,9 @@ class App
     if env["REQUEST_PATH"] == "/favicon.ico"
       return [200, {}, [""]]
     end
-    url = "http:/" + env['REQUEST_PATH']
-    p url
-    data = open(url).read
-    resized = resize(data)
+    #url = "http:/" + env['REQUEST_PATH']
+    #data = open(url).read
+    resized = resize(DATA)
     [200, {"Content-Type" => "image/png"}, [resized]]
   end
 end
